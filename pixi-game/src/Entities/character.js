@@ -4,12 +4,19 @@ import Bullet from './bullet';
 import Rope from './rope';
 
 const Character = ({ app }) => {
+    //const texture = PIXI.Sprite.from('./character.png');
   const characterRef = useRef(new PIXI.Graphics());
   const [keysPressed, setKeysPressed] = useState({});
   const [bullets, setBullets] = useState([]);
   const [showRope, setShowRope] = useState(false);
 
   useEffect(() => {
+    // const bunny = new PIXI.Sprite(texture);
+    // bunny.x = 30;
+    // bunny.y =  30;
+    // bunny.rotation = Math.random() * (Math.PI * 2);
+    // app.stage.addChild(bunny);
+
     const character = characterRef.current;
     character.beginFill(0xff0000);
     character.drawRect(0, 0, 50, 50);
