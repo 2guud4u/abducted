@@ -9,7 +9,7 @@ const App = () => {
     const pixiApp = new PIXI.Application({
       width: window.innerWidth,
       height: window.innerHeight,
-      backgroundColor: 0x1099bb,
+      backgroundColor: 0x00000,
     });
 
     document.body.appendChild(pixiApp.view);
