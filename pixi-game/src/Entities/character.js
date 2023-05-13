@@ -1,11 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import * as PIXI from 'pixi.js';
+import Bullet from './bullet';
+import { Stage, Sprite } from 'react-pixi';
 
 const Character = ({ app }) => {
   const characterRef = useRef(new PIXI.Graphics());
   const [keysPressed, setKeysPressed] = useState({});
+  const [bullets, setBullets] = useState([]);
 
   useEffect(() => {
+
     const character = characterRef.current;
     character.beginFill(0xff0000);
     character.drawRect(0, 0, 50, 50);
@@ -18,6 +22,13 @@ const Character = ({ app }) => {
 
     const handleKeyDown = (e) => {
       setKeysPressed(keysPressed => ({ ...keysPressed, [e.key]: true }));
+
+      if (e.key === 'g') {
+        setBullets(bullets => [
+          ...bullets,
+          <Bullet key={bullets.length} app={app} startX={character.x + 50} startY={character.y + 25} />
+        ]);
+      }
     };
 
     const handleKeyUp = (e) => {
@@ -49,7 +60,11 @@ const Character = ({ app }) => {
     };
   }, [app, keysPressed]);
 
-  return null;
+  return (
+    <>
+      {bullets}
+    </>
+  );
 };
 
 export default Character;
