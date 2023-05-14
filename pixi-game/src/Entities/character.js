@@ -4,22 +4,34 @@ import Bullet from './bullet';
 import Rope from './rope';
 
 const Character = ({ app }) => {
-  const characterRef = useRef(null);
+    //const texture = PIXI.Sprite.from('./character.png');
+  const characterRef = useRef(new PIXI.Graphics());
   const [keysPressed, setKeysPressed] = useState({});
   const [bullets, setBullets] = useState([]);
   const [showRope, setShowRope] = useState(false);
 
   useEffect(() => {
-    const characterTexture = PIXI.Texture.from('https://pixijs.io/examples/examples/assets/bunny.png');
-    const characterSprite = new PIXI.Sprite(characterTexture);
-    characterSprite.width = 50;
-    characterSprite.height = 50;
+    // const bunny = new PIXI.Sprite(texture);
+    // bunny.x = 30;
+    // bunny.y =  30;
+    // bunny.rotation = Math.random() * (Math.PI * 2);
+    // app.stage.addChild(bunny);
 
-    characterRef.current = characterSprite;
-    characterSprite.x = app.screen.width / 2;
-    characterSprite.y = app.screen.height / 2;
+    // const character = characterRef.current;
+    // character.beginFill(0xff0000);
+    // character.drawRect(0, 0, 50, 50);
+    // character.endFill(); 
+    const characterTexture = PIXI.Texture.from('https://raw.githubusercontent.com/2guud4u/abducted/d7a12237fe333310a6bb4e0e9e1ed35a2aff34cf/pixi-game/src/Entities/skins/main.png');
+    const character = new PIXI.Sprite(characterTexture);
+    character.width = 125;
+    character.height = 125;
+    characterRef.current = character;
+    character.x = app.screen.width / 2;
+    character.y = app.screen.height / 2;
 
-    app.stage.addChild(characterSprite);
+    app.stage.addChild(character);
+
+    app.stage.addChild(character);
 
     const handleKeyDown = (e) => {
       setKeysPressed(keysPressed => ({ ...keysPressed, [e.key]: true }));
@@ -27,7 +39,7 @@ const Character = ({ app }) => {
       if (e.key === 'g') {
         setBullets(bullets => [
           ...bullets,
-          <Bullet key={bullets.length} app={app} startX={characterSprite.x + 50} startY={characterSprite.y + 25} />
+          <Bullet key={bullets.length} app={app} startX={character.x + 120} startY={character.y + 70} />
         ]);
       }
 

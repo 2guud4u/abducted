@@ -16,7 +16,7 @@ const Bullet = ({ app, startX, startY }) => {
     app.stage.addChild(bullet);
 
     const moveBullet = () => {
-      bullet.x += 5;
+      bullet.x += 10;
     };
 
     app.ticker.add(moveBullet);

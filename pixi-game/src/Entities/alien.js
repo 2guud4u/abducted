@@ -2,26 +2,24 @@ import { useEffect, useRef } from 'react';
 import * as PIXI from 'pixi.js';
 
 const GreenBlock = ({ app }) => {
-  const blockRef = useRef(new PIXI.Graphics());
+  const blockRef = useRef(null);
 
   useEffect(() => {
-    const block = blockRef.current;
+    const blockTexture = PIXI.Texture.from('https://raw.githubusercontent.com/2guud4u/abducted/newBranch/pixi-game/src/Entities/skins/happyAlien.png');
+    const blockSprite = new PIXI.Sprite(blockTexture);
+    blockSprite.width = 50;
+    blockSprite.height = 50;
+    blockRef.current = blockSprite;
 
-    block.beginFill(0x00FF00); // Green color
-    const size = Math.random() * 50 + 50; // random size between 50 and 100
-    block.drawRect(0, 0, size, size); // draw a square
-    block.endFill();
+    blockSprite.y = app.screen.height - 45 - blockSprite.height;
+    blockSprite.x = app.screen.width;
 
-    block.y = app.screen.height - 50 - size; // position the block on the ground
-    block.x = app.screen.width; // position the block at the right edge of the screen
-
-    // Add the block to the stage
-    app.stage.addChild(block);
+    app.stage.addChild(blockSprite);
 
     const moveBlock = () => {
-      block.x -= 4;
-      if (block.x + block.width < 0) {
-        app.stage.removeChild(block);
+      blockSprite.x -= 3;
+      if (blockSprite.x + blockSprite.width < 0) {
+        app.stage.removeChild(blockSprite);
         app.ticker.remove(moveBlock);
       }
     };
@@ -30,8 +28,8 @@ const GreenBlock = ({ app }) => {
 
     return () => {
       app.ticker.remove(moveBlock);
-      if (app.stage.children.includes(block)) {
-        app.stage.removeChild(block);
+      if (app.stage.children.includes(blockSprite)) {
+        app.stage.removeChild(blockSprite);
       }
     };
   }, [app]);
