@@ -4,30 +4,22 @@ import Bullet from './bullet';
 import Rope from './rope';
 
 const Character = ({ app }) => {
-    //const texture = PIXI.Sprite.from('./character.png');
-  const characterRef = useRef(new PIXI.Graphics());
+  const characterRef = useRef(null);
   const [keysPressed, setKeysPressed] = useState({});
   const [bullets, setBullets] = useState([]);
   const [showRope, setShowRope] = useState(false);
 
   useEffect(() => {
-    // const bunny = new PIXI.Sprite(texture);
-    // bunny.x = 30;
-    // bunny.y =  30;
-    // bunny.rotation = Math.random() * (Math.PI * 2);
-    // app.stage.addChild(bunny);
+    const characterTexture = PIXI.Texture.from('https://pixijs.io/examples/examples/assets/bunny.png');
+    const characterSprite = new PIXI.Sprite(characterTexture);
+    characterSprite.width = 50;
+    characterSprite.height = 50;
 
-    const character = characterRef.current;
-    character.beginFill(0xff0000);
-    character.drawRect(0, 0, 50, 50);
-    character.endFill(); 
-    //const character = new PIXI.Sprite.from('https://pixijs.io/examples/examples/assets/bunny.png'); // Replace with the actual URL of the character texture
+    characterRef.current = characterSprite;
+    characterSprite.x = app.screen.width / 2;
+    characterSprite.y = app.screen.height / 2;
 
-    characterRef.current = character;
-    character.x = app.screen.width / 2;
-    character.y = app.screen.height / 2;
-
-    app.stage.addChild(character);
+    app.stage.addChild(characterSprite);
 
     const handleKeyDown = (e) => {
       setKeysPressed(keysPressed => ({ ...keysPressed, [e.key]: true }));
@@ -35,7 +27,7 @@ const Character = ({ app }) => {
       if (e.key === 'g') {
         setBullets(bullets => [
           ...bullets,
-          <Bullet key={bullets.length} app={app} startX={character.x + 50} startY={character.y + 25} />
+          <Bullet key={bullets.length} app={app} startX={characterSprite.x + 50} startY={characterSprite.y + 25} />
         ]);
       }
 

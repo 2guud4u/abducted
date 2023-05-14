@@ -5,7 +5,9 @@ import * as PIXI from 'pixi.js';
 
 const Game = ({ app }) => {
   const [blocks, setBlocks] = useState([]);
-
+  
+  let sprite = PIXI.Sprite.from('https://pixijs.io/examples/examples/assets/bunny.png');
+  app.stage.addChild(sprite);
 //     console.log("hii")
   useEffect(() => {
     // Create the ground
