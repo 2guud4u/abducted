@@ -19,7 +19,7 @@ const GreenBlock = ({ app }) => {
     app.stage.addChild(block);
 
     const moveBlock = () => {
-      block.x -= 2;
+      block.x -= 4;
       if (block.x + block.width < 0) {
         app.stage.removeChild(block);
         app.ticker.remove(moveBlock);
