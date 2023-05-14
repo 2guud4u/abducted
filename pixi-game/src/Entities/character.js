@@ -31,7 +31,7 @@ const Character = ({ app }) => {
 
     app.stage.addChild(character);
 
-    app.stage.addChild(character);
+    
 
     const handleKeyDown = (e) => {
       setKeysPressed(keysPressed => ({ ...keysPressed, [e.key]: true }));

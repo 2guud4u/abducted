@@ -25,6 +25,7 @@ const Asteroid = ({ app }) => {
         if (sprite !== asteroid && sprite.getBounds().intersects(asteroid.getBounds())) {
           app.stage.removeChild(sprite); // Remove bullet
           app.stage.removeChild(asteroid); // Remove asteroid
+          app.ticker.remove(moveAsteroid); // Stop moving the asteroid
           break;
         }
       }
@@ -33,6 +34,10 @@ const Asteroid = ({ app }) => {
     app.ticker.add(moveAsteroid);
 
     return () => {
+      // Ensure asteroid is removed when unmounting
+      if (app.stage.children.includes(asteroid)) {
+        app.stage.removeChild(asteroid);
+      }
       app.ticker.remove(moveAsteroid);
     };
   }, [app]);
