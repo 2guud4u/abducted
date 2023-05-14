@@ -1,17 +1,33 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+function AppWrapper() {
+  const [appStarted, setAppStarted] = useState(false);
+
+  const startApp = () => {
+    setAppStarted(true);
+  };
+
+  return (
+    <React.StrictMode>
+      <App />
+      {!appStarted && (
+        <div className="overlay">
+          <h1>Welcome to My App</h1>
+          <p>Click the button below to start the app:</p>
+          <button onClick={startApp}>Start App</button>
+        </div>
+      )}
+    </React.StrictMode>
+  );
+}
+
+ReactDOM.render(
+  <AppWrapper />,
+  document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
