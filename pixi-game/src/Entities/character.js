@@ -20,8 +20,10 @@ const Character = ({ app }) => {
     const character = characterRef.current;
     character.beginFill(0xff0000);
     character.drawRect(0, 0, 50, 50);
-    character.endFill();
+    character.endFill(); 
+    //const character = new PIXI.Sprite.from('https://pixijs.io/examples/examples/assets/bunny.png'); // Replace with the actual URL of the character texture
 
+    characterRef.current = character;
     character.x = app.screen.width / 2;
     character.y = app.screen.height / 2;
 
