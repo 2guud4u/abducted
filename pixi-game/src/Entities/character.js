@@ -1,37 +1,25 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as PIXI from 'pixi.js';
 import Bullet from './bullet';
 import Rope from './rope';
 
-const Character = ({ app }) => {
-    //const texture = PIXI.Sprite.from('./character.png');
-  const characterRef = useRef(new PIXI.Graphics());
+const Character = ({ app, blocks }) => {
+  const [character, setCharacter] = useState(null);
   const [keysPressed, setKeysPressed] = useState({});
   const [bullets, setBullets] = useState([]);
   const [showRope, setShowRope] = useState(false);
+  const [ropeKey, setRopeKey] = useState(0);  // new state to force re-render of Rope component
 
   useEffect(() => {
-    // const bunny = new PIXI.Sprite(texture);
-    // bunny.x = 30;
-    // bunny.y =  30;
-    // bunny.rotation = Math.random() * (Math.PI * 2);
-    // app.stage.addChild(bunny);
-
-    // const character = characterRef.current;
-    // character.beginFill(0xff0000);
-    // character.drawRect(0, 0, 50, 50);
-    // character.endFill(); 
     const characterTexture = PIXI.Texture.from('https://raw.githubusercontent.com/2guud4u/abducted/d7a12237fe333310a6bb4e0e9e1ed35a2aff34cf/pixi-game/src/Entities/skins/main.png');
-    const character = new PIXI.Sprite(characterTexture);
-    character.width = 125;
-    character.height = 125;
-    characterRef.current = character;
-    character.x = app.screen.width / 2;
-    character.y = app.screen.height / 2;
+    const characterSprite = new PIXI.Sprite(characterTexture);
+    characterSprite.width = 125;
+    characterSprite.height = 125;
+    setCharacter(characterSprite);
+    characterSprite.x = app.screen.width / 2;
+    characterSprite.y = app.screen.height / 2;
 
-    app.stage.addChild(character);
-
-    
+    app.stage.addChild(characterSprite);
 
     const handleKeyDown = (e) => {
       setKeysPressed(keysPressed => ({ ...keysPressed, [e.key]: true }));
@@ -39,21 +27,18 @@ const Character = ({ app }) => {
       if (e.key === 'g') {
         setBullets(bullets => [
           ...bullets,
-          <Bullet key={bullets.length} app={app} startX={character.x + 120} startY={character.y + 70} />
+          <Bullet key={bullets.length} app={app} startX={characterSprite.x + 120} startY={characterSprite.y + 70} />
         ]);
       }
 
       if (e.key === ' ') { // Space key
         setShowRope(true);
+        setRopeKey(prevKey => prevKey + 1);  // increment the key to force re-render
       }
     };
 
     const handleKeyUp = (e) => {
       setKeysPressed(keysPressed => ({ ...keysPressed, [e.key]: false }));
-
-      if (e.key === ' ') { // Space key
-        setShowRope(false);
-      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -66,8 +51,9 @@ const Character = ({ app }) => {
   }, [app]);
 
   useEffect(() => {
-    const character = characterRef.current;
     const moveCharacter = () => {
+      if (!character) return;
+
       if (keysPressed.w) character.y -= 5;
       if (keysPressed.a) character.x -= 5;
       if (keysPressed.s) character.y += 5;
@@ -79,12 +65,12 @@ const Character = ({ app }) => {
     return () => {
       app.ticker.remove(moveCharacter);
     };
-  }, [app, keysPressed]);
+  }, [app, character, keysPressed]);
 
   return (
     <>
       {bullets}
-      {showRope && <Rope app={app} character={characterRef.current} />}
+      {showRope && character && <Rope app={app} character={character} blocks={blocks} />}
     </>
   );
 };

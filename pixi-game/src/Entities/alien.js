@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, forwardRef } from 'react';
 import * as PIXI from 'pixi.js';
 
-const GreenBlock = ({ app }) => {
+const GreenBlock = forwardRef(({ app }, ref) => {
   const blockRef = useRef(null);
 
   useEffect(() => {
@@ -9,7 +9,11 @@ const GreenBlock = ({ app }) => {
     const blockSprite = new PIXI.Sprite(blockTexture);
     blockSprite.width = 50;
     blockSprite.height = 50;
+
     blockRef.current = blockSprite;
+    if (ref) {
+      ref.current = blockSprite;
+    }
 
     blockSprite.y = app.screen.height - 45 - blockSprite.height;
     blockSprite.x = app.screen.width;
@@ -32,9 +36,9 @@ const GreenBlock = ({ app }) => {
         app.stage.removeChild(blockSprite);
       }
     };
-  }, [app]);
+  }, [app, ref]);
 
   return null;
-};
+});
 
 export default GreenBlock;

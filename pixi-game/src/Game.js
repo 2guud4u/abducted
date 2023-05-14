@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Character from './Entities/character';
 import GreenBlock from './Entities/alien';
 import Asteroid from './Entities/asteroid';
+import ShrinkingRope from './Entities/rope'; // Import the ShrinkingRope component
+import Cops from './Entities/cops'; // Import the Cops component
 import * as PIXI from 'pixi.js';
 
 const Game = ({ app }) => {
-  const [blocks, setBlocks] = useState([]);
+  const [blockRefs, setBlockRefs] = useState([]); // State for block refs
+  const [blocks, setBlocks] = useState([]); // State for block components
   const [bullets, setBullets] = useState([]); // State for bullets
   const [asteroids, setAsteroids] = useState([]); // State for asteroids
+  const [showShrinkingRope, setShowShrinkingRope] = useState(false); // State to control the visibility of the shrinking rope
 
   let sprite = PIXI.Sprite.from('https://pixijs.io/examples/examples/assets/bunny.png');
   app.stage.addChild(sprite);
@@ -26,7 +30,7 @@ const Game = ({ app }) => {
     const createBlock = () => {
       setBlocks(blocks => [
         ...blocks,
-        <GreenBlock key={blocks.length} app={app} />
+        <GreenBlock key={blocks.length} app={app} ref={ref => setBlockRefs(blockRefs => [...blockRefs, ref])} />
       ]);
 
       // Schedule the creation of the next block
@@ -49,6 +53,10 @@ const Game = ({ app }) => {
     createAsteroid();
   }, [app]);
 
+  const handleGreenBlockCollision = () => {
+    setShowShrinkingRope(true);
+  };
+
   const addBullet = (bulletRef) => {
     setBullets(bullets => [...bullets, bulletRef]);
   };
@@ -59,9 +67,11 @@ const Game = ({ app }) => {
 
   return (
     <>
-      <Character app={app} addBullet={addBullet} removeBullet={removeBullet} />
+      <Character app={app} addBullet={addBullet} removeBullet={removeBullet} blocks={blockRefs} />
+      <Cops app={app} /> {/* Spawn cops from the left side */}
       {blocks}
-      {asteroids} 
+      {asteroids}
+      {showShrinkingRope && <ShrinkingRope app={app} onCollision={handleGreenBlockCollision} />}
     </>
   );
 };

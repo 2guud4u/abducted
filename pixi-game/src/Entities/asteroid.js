@@ -5,15 +5,23 @@ const Asteroid = ({ app }) => {
   const asteroidRef = useRef(new PIXI.Graphics());
 
   useEffect(() => {
-    const asteroid = asteroidRef.current;
+    // const asteroid = asteroidRef.current;
 
-    asteroid.beginFill(0x00ff00); // Green
-    asteroid.drawCircle(0, 0, 20); // Draw a circle
-    asteroid.endFill();
+    // asteroid.beginFill(0x00ff00); // Green
+    // asteroid.drawCircle(0, 0, 20); // Draw a circle
+    // asteroid.endFill();
+    const asteroidTexture = PIXI.Texture.from('https://raw.githubusercontent.com/2guud4u/abducted/4f211bf5d7b3baf2af18806f062e8572d53ef87f/pixi-game/src/Entities/skins/asteroid.png');
+    const asteroid = new PIXI.Sprite(asteroidTexture);
+    asteroid.width = 100;
+    asteroid.height = 50;
+    asteroidRef.current = asteroid;
 
     asteroid.x = app.screen.width; // Start from the right edge of the screen
-    asteroid.y = Math.random() * app.screen.height; // Random y-coordinate
-
+    //keep asteroid within the air
+    do{
+        asteroid.y = Math.random() * app.screen.height; // Random y-coordinate
+    }while(asteroid.y > 500 );
+    
     app.stage.addChild(asteroid);
 
     const moveAsteroid = () => {
