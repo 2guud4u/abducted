@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import * as PIXI from 'pixi.js';
 
-const Rope = ({ app, character }) => {
+const Rope = ({ app, character, blocks, ropeStage, setRopeStage }) => {
   const ropeRef = useRef(new PIXI.Graphics());
   const [ropeLength, setRopeLength] = useState(0);
-  const [ropeStage, setRopeStage] = useState('growing');
+  const [grabbed, setGrabbed] = useState(false);
 
   useEffect(() => {
     const rope = ropeRef.current;
 
     rope.beginFill(0x0000ff); // Blue color
-    rope.drawRect(0, 0, 10, 100); // draw a rectangle
+    rope.drawRect(0, 0, 10, 1); // draw a rectangle
     rope.endFill();
 
     rope.x = character.x + 100;
@@ -20,7 +20,7 @@ const Rope = ({ app, character }) => {
 
     const updateRope = () => {
       ropeRef.current.x = character.x + 50;
-      ropeRef.current.y = character.y + 100;
+      ropeRef.current.y = character.y + 40;
 
       if (ropeStage === 'growing') {
         ropeRef.current.height = ropeLength;
@@ -37,6 +37,7 @@ const Rope = ({ app, character }) => {
 
         if (ropeLength <= 0) { // Rope fully retracted
           setRopeStage('finished');
+          //setRopeStage('growing');
         }
       }
     };
@@ -46,7 +47,8 @@ const Rope = ({ app, character }) => {
     return () => {
       app.ticker.remove(updateRope);
       if (ropeStage === 'finished') {
-        app.stage.removeChild(ropeRef.current);
+        //app.stage.removeChild(ropeRef.current);
+          //setRopeStage('growing'); 
       }
     };
   }, [app, character, ropeLength, ropeStage]);
