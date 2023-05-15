@@ -30,6 +30,7 @@ const Rope = ({ app, character, blocks, ropeStage, setRopeStage }) => {
 
         if (ropeLength >= 200) { // Maximum length of rope
           setRopeStage('maximum');
+          //change the rope color to yellow
           ropeRef.current.clear();
           ropeRef.current.beginFill(0xffff00);
           ropeRef.current.drawRect(0, 0, 10, ropeLength);
@@ -43,6 +44,10 @@ const Rope = ({ app, character, blocks, ropeStage, setRopeStage }) => {
 
         if (ropeLength <= 0) { // Rope fully retracted
           setRopeStage('finished');
+          ropeRef.current.clear();
+          ropeRef.current.beginFill(0x0000ff);
+          ropeRef.current.drawRect(0, 0, 10, ropeLength);
+          ropeRef.current.endFill(); 
           //setRopeStage('growing');
         }
       }
