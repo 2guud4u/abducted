@@ -19,6 +19,8 @@ const Rope = ({ app, character, blocks, ropeStage, setRopeStage }) => {
     app.stage.addChild(rope);
 
     const updateRope = () => {
+      
+
       ropeRef.current.x = character.x + 50;
       ropeRef.current.y = character.y + 40;
 
@@ -28,6 +30,10 @@ const Rope = ({ app, character, blocks, ropeStage, setRopeStage }) => {
 
         if (ropeLength >= 200) { // Maximum length of rope
           setRopeStage('maximum');
+          ropeRef.current.clear();
+          ropeRef.current.beginFill(0xffff00);
+          ropeRef.current.drawRect(0, 0, 10, ropeLength);
+          ropeRef.current.endFill();
         }
       } else if (ropeStage === 'maximum') {
         setRopeStage('shrinking');
