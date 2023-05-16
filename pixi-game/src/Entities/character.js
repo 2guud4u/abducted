@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import * as PIXI from 'pixi.js';
 import Bullet from './bullet';
 import Rope from './rope';
-
-const Character = ({ app, blocks, mycharacter, mysetCharacter }) => {
+import {characterTexture} from './textures';
+const Character = ({ app, blocks, mycharacter, mysetCharacter, setCharIndex }) => {
   
   const [keysPressed, setKeysPressed] = useState({});
   const [bullets, setBullets] = useState([]);
@@ -11,7 +11,6 @@ const Character = ({ app, blocks, mycharacter, mysetCharacter }) => {
   const [character, setCharacter] = useState(null);
 
   useEffect(() => {
-    const characterTexture = PIXI.Texture.from('https://raw.githubusercontent.com/2guud4u/abducted/newBranch/pixi-game/src/Entities/skins/main.png');
     const characterSprite = new PIXI.Sprite(characterTexture);
     characterSprite.width = 100;
     characterSprite.height = 50;
@@ -20,14 +19,15 @@ const Character = ({ app, blocks, mycharacter, mysetCharacter }) => {
     characterSprite.y = app.screen.height / 2;
     
     app.stage.addChild(characterSprite);
-
+    setCharIndex(app.stage.getChildIndex(characterSprite));
+    
     const handleKeyDown = (e) => {
       setKeysPressed(keysPressed => ({ ...keysPressed, [e.key]: true }));
 
       if (e.key === 'g') {
         setBullets(bullets => [
           ...bullets,
-          <Bullet key={bullets.length} app={app} startX={characterSprite.x + 120} startY={characterSprite.y + 70} />
+          <Bullet key={bullets.length} app={app} startX={characterSprite.x + 90} startY={characterSprite.y + 20} />
         ]);
       }
 

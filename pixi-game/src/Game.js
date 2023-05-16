@@ -11,8 +11,8 @@ const Game = ({ app }) => {
   const [blocks, setBlocks] = useState([]); // State for block components
   const [bullets, setBullets] = useState([]); // State for bullets
   const [asteroids, setAsteroids] = useState([]); // State for asteroids
-  const [showShrinkingRope, setShowShrinkingRope] = useState(false); // State to control the visibility of the shrinking rope
-
+  const [charIndex, setCharIndex] = useState(0); // State for character index
+  const [score, setScore] = useState(0); // State for score
   let sprite = PIXI.Sprite.from('https://pixijs.io/examples/examples/assets/bunny.png');
   app.stage.addChild(sprite);
 
@@ -25,12 +25,12 @@ const Game = ({ app }) => {
 
     // Add the ground to the stage
     app.stage.addChild(ground);
-
+    console.log(score);
     // Create new blocks periodically and randomly
     const createBlock = () => {
       setBlocks(blocks => [
         ...blocks,
-        <GreenBlock key={blocks.length} app={app} ref={ref => setBlockRefs(blockRefs => [...blockRefs, ref])} />
+        <GreenBlock key={blocks.length} app={app} ref={ref => setBlockRefs(blockRefs => [...blockRefs, ref])} charIndex={charIndex} setScore={setScore}/>
       ]);
 
       // Schedule the creation of the next block
@@ -51,11 +51,12 @@ const Game = ({ app }) => {
     };
 
     createAsteroid();
-  }, [app]);
+    console.log( "charIndex:", charIndex);
+  }, [app, charIndex]);
 
-  const handleGreenBlockCollision = () => {
-    setShowShrinkingRope(true);
-  };
+  // const handleGreenBlockCollision = () => {
+  //   setShowShrinkingRope(true);
+  // };
 
   const addBullet = (bulletRef) => {
     setBullets(bullets => [...bullets, bulletRef]);
@@ -67,11 +68,11 @@ const Game = ({ app }) => {
 
   return (
     <>
-      <Character app={app} addBullet={addBullet} removeBullet={removeBullet} blocks={blockRefs} />
-      <Cops app={app} /> {/* Spawn cops from the left side */}
+      <Character app={app} addBullet={addBullet} removeBullet={removeBullet} blocks={blockRefs} setCharIndex={setCharIndex}/>
+      <Cops app={app} charIndex={charIndex}/> 
       {blocks}
       {asteroids}
-      {showShrinkingRope && <ShrinkingRope app={app} onCollision={handleGreenBlockCollision} />}
+      {/* {showShrinkingRope && <ShrinkingRope app={app} onCollision={handleGreenBlockCollision} />} */}
     </>
   );
 };

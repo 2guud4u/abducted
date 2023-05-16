@@ -1,15 +1,14 @@
 import { useEffect, useRef, forwardRef } from 'react';
 import * as PIXI from 'pixi.js';
-
-const GreenBlock = forwardRef(({ app }, ref) => {
+import {alienTexture, characterTexture} from './textures';
+const GreenBlock = forwardRef(({ app , charIndex, setScore}, ref) => {
   const blockRef = useRef(null);
 
   useEffect(() => {
-    const blockTexture = PIXI.Texture.from('https://raw.githubusercontent.com/2guud4u/abducted/newBranch/pixi-game/src/Entities/skins/happyAlien.png');
-    const blockSprite = new PIXI.Sprite(blockTexture);
+    const blockSprite = new PIXI.Sprite(alienTexture);
     blockSprite.width = 50;
     blockSprite.height = 50;
-
+    //blockSprite = 'alien'; 
     blockRef.current = blockSprite;
     if (ref) {
       ref.current = blockSprite;
@@ -26,8 +25,19 @@ const GreenBlock = forwardRef(({ app }, ref) => {
         app.stage.removeChild(blockSprite);
         app.ticker.remove(moveBlock);
       }
+      for (let i = 0; i < app.stage.children.length; i++) {
+        const sprite = app.stage.children[i];
+        // Check if the sprite is a bullet and if it collides with the asteroid
+        if (sprite.texture === characterTexture && sprite !==  blockSprite&& sprite.getBounds().intersects(blockSprite.getBounds())) {
+          setScore(score => score + 1);
+          
+          app.stage.removeChild(blockSprite); // Remove asteroid
+          app.ticker.remove(moveBlock); // Stop moving the asteroid
+          break;
+        }
+      }
     };
-
+    
     app.ticker.add(moveBlock);
 
     return () => {
@@ -36,7 +46,7 @@ const GreenBlock = forwardRef(({ app }, ref) => {
         app.stage.removeChild(blockSprite);
       }
     };
-  }, [app, ref]);
+  }, [app, ref, charIndex]);
 
   return null;
 });

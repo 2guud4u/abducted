@@ -1,19 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 import * as PIXI from 'pixi.js';
-import GreenBlock from './alien';
+import {alienTexture, characterTexture} from './textures';
 
 const Rope = ({ app, character, blocks, ropeStage, setRopeStage }) => {
   const ropeRef = useRef(null);
   const [ropeLength, setRopeLength] = useState(0);
   const [grabbed, setGrabbed] = useState(false);
   const ropeTexture = PIXI.Texture.from('https://raw.githubusercontent.com/2guud4u/abducted/4f211bf5d7b3baf2af18806f062e8572d53ef87f/pixi-game/src/Entities/skins/asteroid.png');
-  const alienTexture = PIXI.Texture.from('https://raw.githubusercontent.com/2guud4u/abducted/newBranch/pixi-game/src/Entities/skins/happyAlien.png'); 
   useEffect(() => {
     if (ropeRef.current) {
       app.stage.removeChild(ropeRef.current);
     }
-
+    //render ropetype
     const rope = new PIXI.Sprite(ropeTexture);
+    
+    if(grabbed){
+      const rope = new PIXI.Sprite(alienTexture);
+    } 
     ropeRef.current = rope;
 
     rope.x = character.x + 100;
@@ -43,7 +46,9 @@ const Rope = ({ app, character, blocks, ropeStage, setRopeStage }) => {
 
         if (ropeLength <= 0) { // Rope fully retracted
           setRopeStage('finished');
+        
           ropeRef.current.tint = 0x0000ff; // Set the tint color back to blue
+
         }
       }
       for (let i = 0; i < app.stage.children.length; i++) {
@@ -52,6 +57,7 @@ const Rope = ({ app, character, blocks, ropeStage, setRopeStage }) => {
         if ( sprite.texture === alienTexture &&   sprite !== rope && sprite.getBounds().intersects(rope.getBounds())) {
           sprite.x = ropeRef.current.x;
           sprite.y = ropeRef.current.height + ropeRef.current.y-10;
+          setGrabbed(true);
           //app.stage.removeChild(sprite); // Remove bullet
           
           break;
@@ -64,10 +70,11 @@ const Rope = ({ app, character, blocks, ropeStage, setRopeStage }) => {
     return () => {
       app.ticker.remove(updateRope);
       if (ropeStage === 'finished') {
+        setGrabbed(false);
         app.stage.removeChild(ropeRef.current);
       }
     };
-  }, [app, character, ropeLength, ropeStage]);
+  }, [app, character, ropeLength, ropeStage, grabbed]);
 
   return null;
 };

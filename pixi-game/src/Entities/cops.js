@@ -1,12 +1,29 @@
 import React, { useEffect, useRef } from 'react';
 import * as PIXI from 'pixi.js';
 
-const Cops = ({ app }) => {
+const Cops = ({ app, charIndex }) => {
   const copsRef = useRef([]);
 
   useEffect(() => {
     const moveCop = (cop) => {
-      cop.x += 2; // Adjust the speed of cop movement
+      let char = app.stage.children[charIndex]
+      if(char.x !== 0){
+        if (char.x != 0&& char.x > cop.x) {
+          cop.x += 1;
+        } else{
+          cop.x -= 1;
+        }
+        if (char.y > cop.y) {
+          cop.y += 1;
+        } else{
+          cop.y -= 1;
+      }
+      } else{
+        cop.x += 1;
+      }
+      
+      
+    
     };
 
     const removeCop = (cop) => {
@@ -34,7 +51,7 @@ const Cops = ({ app }) => {
       app.ticker.add(() => removeCop(cop));
 
       // Schedule the creation of the next cop
-      setTimeout(spawnCop, Math.random() * 2000 + 90000); // random interval between 1 and 3 seconds
+      setTimeout(spawnCop, Math.random() * 2000 + 10000); // random interval between 1 and 3 seconds
     };
 
     spawnCop();
@@ -47,7 +64,7 @@ const Cops = ({ app }) => {
       });
       copsRef.current = [];
     };
-  }, [app]);
+  }, [app, charIndex]);
 
   return null;
 };
