@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import * as PIXI from 'pixi.js';
 
-const Asteroid = ({ app }) => {
+const Asteroid = ({ app, appStarted }) => {
   const asteroidRef = useRef(new PIXI.Graphics());
 
   useEffect(() => {

@@ -10,9 +10,10 @@ const Rope = ({ app, character, blocks, ropeStage, setRopeStage }) => {
     if (ropeRef.current) {
       app.stage.removeChild(ropeRef.current);
     }
-    //render ropetype
+
     const rope = new PIXI.Sprite(ropeTexture);
-    
+    rope.height = 200;
+    rope.width = 20;
     // if(grabbed){
     //   const rope = new PIXI.Sprite(ropeTexture);
     // } 

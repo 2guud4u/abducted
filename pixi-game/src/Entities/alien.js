@@ -1,7 +1,8 @@
 import { useEffect, useRef, forwardRef } from 'react';
 import * as PIXI from 'pixi.js';
 import {alienTexture, characterTexture} from './textures';
-const GreenBlock = forwardRef(({ app , charIndex, setScore}, ref) => {
+const GreenBlock = forwardRef(({ app, charIndex, setScore, appStarted }, ref) => {
+
   const blockRef = useRef(null);
 
   useEffect(() => {
@@ -20,6 +21,8 @@ const GreenBlock = forwardRef(({ app , charIndex, setScore}, ref) => {
     app.stage.addChild(blockSprite);
 
     const moveBlock = () => {
+      if (!appStarted) return;
+
       blockSprite.x -= 3;
       if (blockSprite.x + blockSprite.width < 0) {
         app.stage.removeChild(blockSprite);

@@ -3,7 +3,7 @@ import * as PIXI from 'pixi.js';
 import Bullet from './bullet';
 import Rope from './rope';
 import {characterTexture} from './textures';
-const Character = ({ app, blocks, mycharacter, mysetCharacter, setCharIndex }) => {
+const Character = ({ app, blocks, mycharacter, mysetCharacter, setCharIndex, appStarted }) => {
   
   const [keysPressed, setKeysPressed] = useState({});
   const [bullets, setBullets] = useState([]);
@@ -54,6 +54,8 @@ const Character = ({ app, blocks, mycharacter, mysetCharacter, setCharIndex }) =
   useEffect(() => {
     
     const moveCharacter = () => {
+
+      if (!appStarted) return;
       
       if (!character) return;
 
@@ -70,7 +72,7 @@ const Character = ({ app, blocks, mycharacter, mysetCharacter, setCharIndex }) =
     return () => {
       app.ticker.remove(moveCharacter);
     };
-  }, [app, character, keysPressed, mysetCharacter]);
+  }, [app, character, keysPressed, mysetCharacter, appStarted]);
 
   return (
     <>

@@ -13,7 +13,7 @@ function AppWrapper() {
 
   return (
     <React.StrictMode>
-      <App />
+    <App appStarted={appStarted} />
       {!appStarted && (
         <div className="overlay">
           <h1>Welcome to My App</h1>
