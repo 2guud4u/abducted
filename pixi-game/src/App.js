@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import * as PIXI from 'pixi.js';
 import Game from './Game';
 
-const App = () => {
+const App = ({ appStarted }) => {
   const [app, setApp] = useState(null);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const App = () => {
     };
   }, []);
 
-  return app ? <Game app={app} /> : null;
+  return app ? <Game app={app} appStarted={appStarted} /> : null;
 };
 
 export default App;

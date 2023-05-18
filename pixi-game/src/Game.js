@@ -6,7 +6,7 @@ import ShrinkingRope from './Entities/rope'; // Import the ShrinkingRope compone
 import Cops from './Entities/cops'; // Import the Cops component
 import * as PIXI from 'pixi.js';
 
-const Game = ({ app }) => {
+const Game = ({ app, appStarted }) => {
   const [blockRefs, setBlockRefs] = useState([]); // State for block refs
   const [blocks, setBlocks] = useState([]); // State for block components
   const [bullets, setBullets] = useState([]); // State for bullets
@@ -30,29 +30,31 @@ const Game = ({ app }) => {
     const createBlock = () => {
       setBlocks(blocks => [
         ...blocks,
-        <GreenBlock key={blocks.length} app={app} ref={ref => setBlockRefs(blockRefs => [...blockRefs, ref])} charIndex={charIndex} setScore={setScore}/>
+        <GreenBlock key={blocks.length} app={app} appStarted={appStarted} ref={ref => setBlockRefs(blockRefs => [...blockRefs, ref])} charIndex={charIndex} setScore={setScore}/>
       ]);
 
       // Schedule the creation of the next block
       setTimeout(createBlock, Math.random() * 2000 + 1000); // random interval between 1 and 3 seconds
     };
 
-    createBlock();
-
-    // Create new asteroids periodically and randomly
+      // Create new asteroids periodically and randomly
     const createAsteroid = () => {
       setAsteroids(asteroids => [
-        ...asteroids,
-        <Asteroid key={asteroids.length} app={app} />
+       ...asteroids,
+        <Asteroid key={asteroids.length} app={app} appStarted={appStarted}/>
       ]);
-
-      // Schedule the creation of the next asteroid
+    
+       // Schedule the creation of the next asteroid
       setTimeout(createAsteroid, Math.random() * 2000 + 1000); // random interval between 1 and 3 seconds
     };
 
-    createAsteroid();
+    if (appStarted) {
+      createBlock();
+      createAsteroid();
+    }
+
     console.log( "charIndex:", charIndex);
-  }, [app, charIndex]);
+  }, [app, charIndex, appStarted]);
 
   // const handleGreenBlockCollision = () => {
   //   setShowShrinkingRope(true);
@@ -68,7 +70,8 @@ const Game = ({ app }) => {
 
   return (
     <>
-      <Character app={app} addBullet={addBullet} removeBullet={removeBullet} blocks={blockRefs} setCharIndex={setCharIndex}/>
+      <Character app={app} addBullet={addBullet} removeBullet={removeBullet} blocks={blockRefs} setCharIndex={setCharIndex} appStarted={appStarted}/>
+
       <Cops app={app} charIndex={charIndex}/> 
       {blocks}
       {asteroids}
