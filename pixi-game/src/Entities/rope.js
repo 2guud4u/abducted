@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import * as PIXI from 'pixi.js';
-import {alienTexture, characterTexture} from './textures';
+import {alienTexture, characterTexture, ropeTexture} from './textures';
 
 const Rope = ({ app, character, blocks, ropeStage, setRopeStage }) => {
   const ropeRef = useRef(null);
   const [ropeLength, setRopeLength] = useState(0);
   const [grabbed, setGrabbed] = useState(false);
-  const ropeTexture = PIXI.Texture.from('https://raw.githubusercontent.com/2guud4u/abducted/4f211bf5d7b3baf2af18806f062e8572d53ef87f/pixi-game/src/Entities/skins/asteroid.png');
   useEffect(() => {
     if (ropeRef.current) {
       app.stage.removeChild(ropeRef.current);
@@ -14,9 +13,9 @@ const Rope = ({ app, character, blocks, ropeStage, setRopeStage }) => {
     //render ropetype
     const rope = new PIXI.Sprite(ropeTexture);
     
-    if(grabbed){
-      const rope = new PIXI.Sprite(alienTexture);
-    } 
+    // if(grabbed){
+    //   const rope = new PIXI.Sprite(ropeTexture);
+    // } 
     ropeRef.current = rope;
 
     rope.x = character.x + 100;
