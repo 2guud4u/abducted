@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import * as PIXI from 'pixi.js';
-
+import { asteroidTexture } from './textures';
 const Asteroid = ({ app, appStarted }) => {
   const asteroidRef = useRef(new PIXI.Graphics());
 
@@ -10,7 +10,6 @@ const Asteroid = ({ app, appStarted }) => {
     // asteroid.beginFill(0x00ff00); // Green
     // asteroid.drawCircle(0, 0, 20); // Draw a circle
     // asteroid.endFill();
-    const asteroidTexture = PIXI.Texture.from('https://raw.githubusercontent.com/2guud4u/abducted/4f211bf5d7b3baf2af18806f062e8572d53ef87f/pixi-game/src/Entities/skins/asteroid.png');
     const asteroid = new PIXI.Sprite(asteroidTexture);
     asteroid.width = 100;
     asteroid.height = 50;

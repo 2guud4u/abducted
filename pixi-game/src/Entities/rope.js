@@ -23,7 +23,7 @@ const Rope = ({ app, character, blocks, ropeStage, setRopeStage }) => {
     rope.y = character.y + 100;
     rope.height = 0;
     app.stage.addChild(rope);
-
+    console.log("rope child added");
     const updateRope = () => {
       ropeRef.current.x = character.x + 50;
       ropeRef.current.y = character.y + 40;
@@ -47,7 +47,7 @@ const Rope = ({ app, character, blocks, ropeStage, setRopeStage }) => {
         if (ropeLength <= 0) { // Rope fully retracted
           setRopeStage('finished');
         
-          ropeRef.current.tint = 0x0000ff; // Set the tint color back to blue
+          
 
         }
       }
@@ -57,7 +57,7 @@ const Rope = ({ app, character, blocks, ropeStage, setRopeStage }) => {
         if ( sprite.texture === alienTexture &&   sprite !== rope && sprite.getBounds().intersects(rope.getBounds())) {
           sprite.x = ropeRef.current.x;
           sprite.y = ropeRef.current.height + ropeRef.current.y-10;
-          setGrabbed(true);
+          //setGrabbed(true);
           //app.stage.removeChild(sprite); // Remove bullet
           
           break;

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as PIXI from 'pixi.js';
-
+import { alienCopTexture } from './textures';
 const Cops = ({ app, charIndex }) => {
   const copsRef = useRef([]);
 
@@ -36,8 +36,7 @@ const Cops = ({ app, charIndex }) => {
     };
 
     const spawnCop = () => {
-      const copTexture = PIXI.Texture.from('https://raw.githubusercontent.com/2guud4u/abducted/newBranch/pixi-game/src/Entities/skins/alienCop.png');
-      const cop = new PIXI.Sprite(copTexture);
+      const cop = new PIXI.Sprite(alienCopTexture);
       cop.anchor.set(0.5); // Set the anchor point to the middle of the sprite
       cop.x = -cop.width / 2; // Spawn outside of the left screen
       do{
