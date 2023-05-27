@@ -11,6 +11,7 @@ const Game = ({ app, appStarted }) => {
   const [blocks, setBlocks] = useState([]); // State for block components
   const [bullets, setBullets] = useState([]); // State for bullets
   const [asteroids, setAsteroids] = useState([]); // State for asteroids
+  const [cops, setCops] = useState([]); // State for cops
   const [charIndex, setCharIndex] = useState(0); // State for character index
   const [score, setScore] = useState(0); // State for score
   let sprite = PIXI.Sprite.from('https://pixijs.io/examples/examples/assets/bunny.png');
@@ -47,11 +48,20 @@ const Game = ({ app, appStarted }) => {
        // Schedule the creation of the next asteroid
       setTimeout(createAsteroid, Math.random() * 2000 + 1000); // random interval between 1 and 3 seconds
     };
-
+    
+    const createCop = () => {
+      setCops(cops => [
+       ...cops,
+        <Cops  app={app} charIndex={charIndex}/>
+      ]);
+    
+       // Schedule the creation of the next asteroid
+      setTimeout(createCop, Math.random() * 2000 + 1000); // random interval between 1 and 3 seconds
+    }; 
     if (appStarted) {
       createBlock();
       createAsteroid();
-      
+      createCop();
     }
 
     console.log( "charIndex:", charIndex);
@@ -73,7 +83,8 @@ const Game = ({ app, appStarted }) => {
     <>
       <Character app={app} addBullet={addBullet} removeBullet={removeBullet} blocks={blockRefs} setCharIndex={setCharIndex} appStarted={appStarted}/>
 
-      <Cops app={app} charIndex={charIndex}/> 
+      {/* <Cops app={app} charIndex={charIndex}/>  */}
+      {cops}
       {blocks}
       {asteroids}
       
