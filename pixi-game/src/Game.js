@@ -3,7 +3,7 @@ import Character from './Entities/character';
 import GreenBlock from './Entities/alien';
 import Asteroid from './Entities/asteroid';
 import ShrinkingRope from './Entities/rope'; // Import the ShrinkingRope component
-import Cops from './Entities/cops'; // Import the Cops component
+import Cops, {spawnCop} from './Entities/cops'; // Import the Cops component
 import * as PIXI from 'pixi.js';
 
 const Game = ({ app, appStarted }) => {
@@ -51,6 +51,7 @@ const Game = ({ app, appStarted }) => {
     if (appStarted) {
       createBlock();
       createAsteroid();
+      
     }
 
     console.log( "charIndex:", charIndex);
@@ -75,7 +76,7 @@ const Game = ({ app, appStarted }) => {
       <Cops app={app} charIndex={charIndex}/> 
       {blocks}
       {asteroids}
-      {/* {showShrinkingRope && <ShrinkingRope app={app} onCollision={handleGreenBlockCollision} />} */}
+      
     </>
   );
 };
